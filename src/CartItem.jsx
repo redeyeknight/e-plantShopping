@@ -6,6 +6,7 @@ import './CartItem.css';
 export const CartItem = ({ onContinueShopping }) => {
   const cart = useSelector(state => state.cart.items);
   const dispatch = useDispatch();
+  
   const handleContinueShopping = (e) => {
     e.preventDefault();
     onContinueShopping(); // Call the function passed from the parent component
@@ -16,18 +17,27 @@ export const CartItem = ({ onContinueShopping }) => {
   };
 
   const handleDecrement = (item) => {
-    dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
-   
+    if (item.quantity > 1) {
+      dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+    } else {
+      dispatch(removeItem(item.name)); // Remove the item if quantity is less than or equal to 1
+    }
   };
 
   const handleRemove = (item) => {
     dispatch(removeItem)(item.name);
   };
 
-
   const calculateTotalCost = (item) => {
     const cost = parseFloat(item.cost.replace('$', '')); // Remove '$' and convert to number
     return (item.quantity * cost).toFixed(2); // Return the total cost for this item
+  };
+
+  const calculateTotalAmount = () => {
+    return cart.reduce((total, item) => {
+      const cost = parseFloat(item.cost.replace('$', '')); // Remove '$' and convert to number
+      return total + (cost * item.quantity); // Sum all item totals
+    }, 0).toFixed(2); // Return the total amount in the cart
   };
 
   return (

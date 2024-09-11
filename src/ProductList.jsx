@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ProductList.css'
-import { CartItem } from './CartItem';
+import  { CartItem }  from './CartItem';
 import { addItem } from './CartSlice';
 import { useDispatch } from 'react-redux';
 
@@ -264,8 +264,6 @@ function ProductList() {
             [plant.name]: true, // Mark the plant as added
         }));
     };
-
-};
     return (
         <div>
              <div className="navbar" style={styleObj}>
@@ -311,5 +309,6 @@ function ProductList() {
     </div>
     );
 
+}
 
 export default ProductList;
